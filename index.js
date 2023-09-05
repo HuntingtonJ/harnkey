@@ -1,5 +1,5 @@
-import express from "express";
-import { Sequelize } from "sequelize";
+const express = require("express");
+const { Sequelize } = require("sequelize");
 
 const sequelize = new Sequelize("db", "user", "password", {
   dialect: "mysql",
@@ -8,17 +8,21 @@ const sequelize = new Sequelize("db", "user", "password", {
   port: "3306",
 });
 
-try {
-  await sequelize.authenticate();
-  console.log("Connection to database has been established");
-} catch (error) {
-  console.error("Unable to connect to database", error);
+run().catch((error) => console.log(error.stack));
+
+async function run() {
+  try {
+    await sequelize.authenticate();
+    console.log("Connection to database has been established");
+  } catch (error) {
+    console.error("Unable to connect to database", error);
+  }
 }
 
 const app = express();
 const port = 3000;
 
-app.use(express.static("public"));
+app.use(express.static("dist"));
 
 app.get("/harness", (req, res) => {
   res.json({

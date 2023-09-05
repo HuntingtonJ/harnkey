@@ -1,5 +1,5 @@
-import "plotly.js-dist-min";
-import "axios";
+import Plotly from "plotly.js-dist-min";
+import axios from "axios";
 
 let harness_data;
 var layout = {

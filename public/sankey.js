@@ -1,35 +1,74 @@
-import 'plotly.js-dist-min';
+import "plotly.js-dist-min";
+import "axios";
 
-var data = {
-  type: "sankey",
-  orientation: "h",
-  node: {
-    pad: 15,
-    thickness: 30,
-    line: {
-      color: "black",
-      width: 0.5
-    },
-    label: ["A1", "A2", "B1", "B2", "C1", "C2"],
-    color: ["blue", "blue", "blue", "blue", "blue", "blue"]
-  },
-
-  link: {
-    source: [0, 1, 0, 2, 3, 3],
-    target: [2, 3, 3, 4, 4, 5],
-    value: [8, 4, 2, 8, 4, 2]
-  }
-}
-
-var data = [data]
-
+let harness_data;
 var layout = {
   title: "Basic Sankey",
   width: 1118,
   height: 772,
   font: {
-    size: 10
-  }
-}
+    size: 10,
+  },
+};
 
-Plotly.react('harnessDiv', data, layout)
+axios
+  .get("/harness")
+  .then(function (res) {
+    console.log(res.data);
+    harness_data = [createData(res.data)];
+  })
+  .catch(function (error) {
+    console.error(error);
+  })
+  .finally(function () {
+    console.log("/harness");
+    Plotly.react("harnessDiv", harness_data, layout);
+  });
+
+const createData = function (resData) {
+  const links = resData.links;
+  const nodes = resData.nodes;
+
+  var data = {
+    type: "sankey",
+    orientation: "h",
+    node: {
+      pad: 15,
+      thickness: 30,
+      line: {
+        color: "black",
+        width: 0.5,
+      },
+      label: [],
+      color: [],
+    },
+
+    link: {
+      source: [],
+      target: [],
+      value: [],
+    },
+  };
+
+  if (typeof links !== "object" || typeof nodes !== "object") {
+    console.error(`typeof links: ${typeof links}`);
+    console.error(`typeof nodes: ${typeof nodes}`);
+    throw new Error("Links or Nodes is not an object");
+  }
+
+  Object.entries(links).map((entry) => {
+    let link = entry[1];
+    data.link.source.push(link.source_node);
+    data.link.target.push(link.target_node);
+    data.link.value.push(link.value);
+  });
+
+  Object.entries(nodes).map((entry) => {
+    let node = entry[1];
+    data.node.label.push(node.label);
+    data.node.color.push(node.color);
+  });
+
+  console.log(data);
+  return data;
+};

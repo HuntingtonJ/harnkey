@@ -1,23 +1,5 @@
 const express = require("express");
-const { Sequelize } = require("sequelize");
-
-const sequelize = new Sequelize("db", "user", "password", {
-  dialect: "mysql",
-  database: "db",
-  host: "127.0.0.1",
-  port: "3306",
-});
-
-run().catch((error) => console.log(error.stack));
-
-async function run() {
-  try {
-    await sequelize.authenticate();
-    console.log("Connection to database has been established");
-  } catch (error) {
-    console.error("Unable to connect to database", error);
-  }
-}
+const db = require("./app/Services/database.js").sequelize;
 
 const app = express();
 const port = 3000;

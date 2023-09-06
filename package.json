@@ -15,8 +15,8 @@
     "db:seed": "npx sequelize-cli db:seed:all",
     "db:seed:undo": "npx sequelize-cli db:seed:undo",
     "db:seed:undo:all": "npx sequelize-cli db:seed:undo:all",
-    "db:reset": "npm run db:seed:undo:all && npm run db:migrate:undo:all",
-    "pack": "npx webpack --config webpack.config.js"
+    "db:reset": "npm run db:seed:undo:all && npm run migrate:undo:all",
+    "build": "npx webpack --config webpack.config.js"
   },
   "author": "",
   "license": "ISC",

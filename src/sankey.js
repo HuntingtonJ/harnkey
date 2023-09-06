@@ -1,7 +1,7 @@
 import Plotly from "plotly.js-dist-min";
 import axios from "axios";
 
-let harness_data;
+let harness_data = [];
 var layout = {
   title: "Basic Sankey",
   width: 1118,
@@ -12,7 +12,7 @@ var layout = {
 };
 
 axios
-  .get("/harness")
+  .get("/harness?name=DEMO")
   .then(function (res) {
     console.log(res.data);
     harness_data = [createData(res.data)];
@@ -56,17 +56,17 @@ const createData = function (resData) {
     throw new Error("Links or Nodes is not an object");
   }
 
-  Object.entries(links).map((entry) => {
-    let link = entry[1];
-    data.link.source.push(link.source_node);
-    data.link.target.push(link.target_node);
-    data.link.value.push(link.value);
-  });
-
   Object.entries(nodes).map((entry) => {
     let node = entry[1];
     data.node.label.push(node.label);
     data.node.color.push(node.color);
+  });
+
+  Object.entries(links).map((entry) => {
+    let link = entry[1];
+    data.link.source.push(link.sourceIndex);
+    data.link.target.push(link.targetIndex);
+    data.link.value.push(link.count);
   });
 
   console.log(data);

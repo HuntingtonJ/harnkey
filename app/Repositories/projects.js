@@ -15,9 +15,7 @@ class Projects {
   async getProjectsById(id) {
     const [results, metadata] = await this.db.query(
       `
-        SELECT * FROM Projects
-        WHERE
-          id = ${id};
+        SELECT * FROM Projects WHERE id = "${id}";
       `
     );
     return results;
@@ -26,9 +24,7 @@ class Projects {
   async getProjectByName(name) {
     const [results, metadata] = await this.db.query(
       `
-        SELECT * FROM Projects
-        WHERE
-          name = ${name};
+        SELECT * FROM Projects WHERE name = "${name}";
       `
     );
     return results;

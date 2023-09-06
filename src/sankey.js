@@ -21,7 +21,6 @@ axios
     console.error(error);
   })
   .finally(function () {
-    console.log("/harness");
     Plotly.react("harnessDiv", harness_data, layout);
   });
 

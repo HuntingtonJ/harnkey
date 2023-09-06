@@ -1,0 +1,15 @@
+{
+  "name": "harnkey_web",
+  "version": "1.0.0",
+  "description": "web view provided through ssg",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vitepress": "^1.0.0-rc.10"
+  }
+}

@@ -1,9 +1,11 @@
 const express = require("express");
 const db = require("./app/Services/database.js");
-const HarnessService = require("./app/Services/harness.js");
-require("./app/Services/harness.js");
+const HarnessService = require("./app/Services/harnessService.js");
+const ProjectService = require("./app/Services/projectService.js");
+require("./app/Services/harnessService.js");
 
 const harnessService = new HarnessService(db);
+const projectService = new ProjectService(db);
 
 // async function test() {
 //   try {
@@ -38,7 +40,10 @@ app.get("/harness", async (req, res) => {
   }
 });
 
-app.get("/projects", async (req, res) => {});
+app.get("/projects", async (req, res) => {
+  const projects = await projectService.getProjects();
+  res.json(projects);
+});
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);

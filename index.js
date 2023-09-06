@@ -1,8 +1,12 @@
 const express = require("express");
-const db = require("./app/Services/database.js").sequelize;
+const Projects = require("./app/Repositories/projects.js");
+const db = require("./app/Services/database.js");
+require("./app/Repositories/projects.js");
 
 const app = express();
 const port = 3000;
+
+const projects = new Projects(db);
 
 app.use(express.static("dist"));
 

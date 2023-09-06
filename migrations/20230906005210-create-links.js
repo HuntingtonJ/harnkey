@@ -9,6 +9,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      projectId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Projects",
+          key: "id",
+        },
+        allowNull: false,
+      },
       sourceId: {
         type: Sequelize.INTEGER,
         references: {

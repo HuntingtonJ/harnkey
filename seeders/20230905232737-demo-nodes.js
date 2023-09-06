@@ -17,6 +17,7 @@ module.exports = {
     await queryInterface.bulkInsert("Nodes", [
       {
         projectId: id,
+        projectIndex: 0,
         label: "A1",
         color: "blue",
         type: "default",
@@ -25,6 +26,7 @@ module.exports = {
       },
       {
         projectId: id,
+        projectIndex: 1,
         label: "A2",
         color: "blue",
         type: "default",
@@ -33,6 +35,7 @@ module.exports = {
       },
       {
         projectId: id,
+        projectIndex: 2,
         label: "B1",
         color: "red",
         type: "default",
@@ -41,6 +44,7 @@ module.exports = {
       },
       {
         projectId: id,
+        projectIndex: 3,
         label: "B2",
         color: "red",
         type: "default",
@@ -49,6 +53,7 @@ module.exports = {
       },
       {
         projectId: id,
+        projectIndex: 4,
         label: "C1",
         color: "orange",
         type: "default",
@@ -57,6 +62,7 @@ module.exports = {
       },
       {
         projectId: id,
+        projectIndex: 5,
         label: "C2",
         color: "orange",
         type: "default",

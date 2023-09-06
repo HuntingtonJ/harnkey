@@ -17,6 +17,10 @@ module.exports = {
         },
         allowNull: false,
       },
+      projectIndex: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       label: {
         type: Sequelize.STRING,
         allowNull: false,

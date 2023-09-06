@@ -5,6 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert("Links", [
       {
+        projectId: 1,
         sourceId: 1,
         targetId: 3,
         label: null,
@@ -13,6 +14,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        projectId: 1,
         sourceId: 2,
         targetId: 4,
         label: null,
@@ -21,6 +23,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        projectId: 1,
         sourceId: 1,
         targetId: 4,
         label: null,
@@ -29,6 +32,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        projectId: 1,
         sourceId: 3,
         targetId: 5,
         label: null,
@@ -37,6 +41,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        projectId: 1,
         sourceId: 4,
         targetId: 5,
         label: null,
@@ -45,6 +50,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        projectId: 1,
         sourceId: 4,
         targetId: 6,
         label: null,

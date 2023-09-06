@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         defaultValue: "default",
       },
+      projectIndex: DataTypes.INTEGER,
     },
     {
       sequelize,

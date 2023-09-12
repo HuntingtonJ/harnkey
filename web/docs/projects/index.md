@@ -14,7 +14,7 @@ layout: doc
 <Sankey :harness-data="data.harnessData" :name="data.name"/>
 
 <script setup>
-import {reactive, onMounted} from "vue";
+import {reactive, onMounted, onUpdated} from "vue";
 import Sankey from "../../components/Sankey.vue";
 import axios from "axios";
 
@@ -33,6 +33,16 @@ onMounted(async () => {
     console.error(`Could not retrieve projects`, error);
   }
 
+  // Get harness data
+  try {
+    let harness = await getHarness(data.name);
+    data.harnessData = [createData(harness)];
+  } catch (error) {
+    console.error(`Could not retrieve harness data: `, error);
+  }
+})
+
+onUpdated(async () => {
   // Get harness data
   try {
     let harness = await getHarness(data.name);

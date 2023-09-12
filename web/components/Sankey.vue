@@ -9,7 +9,6 @@
 <script>
 import {onMounted, onUpdated} from "vue";
 import Plotly from "plotly.js-dist-min";
-import axios from 'axios';
 
 export default {
   props: {
@@ -24,7 +23,7 @@ export default {
       type: Object,
       default(rawProps) {
         return {
-          title: "Basic Sankey",
+          title: "Harness Sankey",
           // width: 1118,
           // height: 772,
           font: {
@@ -40,12 +39,13 @@ export default {
   setup(props) {
     onMounted(() => {
       console.log(props.harnessData);
-      Plotly.react("harnessDiv", props.harnessData, props.layout);
+      Plotly.newPlot("harnessDiv", props.harnessData, props.layout);
     })
 
     onUpdated(() => {
       console.log(props.layout);
       console.log(props.harnessData[0]);
+      props.layout.title = `${props.name} Sankey`;
       Plotly.react("harnessDiv", props.harnessData, props.layout);
     })
   }

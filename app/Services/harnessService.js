@@ -45,9 +45,9 @@ module.exports = class HarnessService {
   async getNodes(projectId) {
     const nodes = await this.nodes.getNodes(projectId);
 
-    if (!nodes[0]) {
-      throw new Error(`Cannot find nodes for projectId: ${projectId}`);
-    }
+    // if (!nodes[0]) {
+    //   throw new Error(`Cannot find nodes for projectId: ${projectId}`);
+    // }
 
     return nodes;
   }
@@ -55,9 +55,9 @@ module.exports = class HarnessService {
   async getLinks(projectId) {
     const links = await this.links.getLinks(projectId);
 
-    if (!links[0]) {
-      throw new Error(`Cannot find links for projectId: ${projectId}`);
-    }
+    // if (!links[0]) {
+    //   throw new Error(`Cannot find links for projectId: ${projectId}`);
+    // }
 
     return links;
   }

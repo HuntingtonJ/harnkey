@@ -4,10 +4,13 @@ layout: home
 
 hero:
   name: "Harnkey"
-  text: "A VitePress Site"
-  tagline: My great project tagline
+  text: "Harnesses???"
+  tagline: A harness visualizer using Sankey diagrams
   actions:
     - theme: brand
+      text: Projects
+      link: /projects/index
+    - theme: alt
       text: Markdown Examples
       link: /markdown-examples
     - theme: alt
@@ -22,4 +25,3 @@ features:
   - title: Feature C
     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 ---
-

@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const db = require("./app/Services/database.js");
 const HarnessService = require("./app/Services/harnessService.js");
 const ProjectService = require("./app/Services/projectService.js");
@@ -20,6 +21,7 @@ const projectService = new ProjectService(db);
 const app = express();
 const port = 3000;
 
+app.use(cors());
 app.use(express.static("dist"));
 
 app.get("/harness", async (req, res) => {

@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 const db = require("./app/Services/database.js");
 const HarnessService = require("./app/Services/harnessService.js");
 const ProjectService = require("./app/Services/projectService.js");
@@ -22,6 +23,7 @@ const app = express();
 const port = 3000;
 
 app.use(cors());
+app.use(bodyParser.json());
 app.use(express.static("dist"));
 
 app.get("/harness", async (req, res) => {
@@ -45,6 +47,37 @@ app.get("/harness", async (req, res) => {
 app.get("/projects", async (req, res) => {
   const projects = await projectService.getProjects();
   res.json(projects);
+});
+
+app.post("/projects", async (req, res) => {
+  console.log(req.body);
+  if (!req.body.name) {
+    res.status(422).json({
+      error: true,
+      message: "Missing name",
+    });
+
+    return;
+  }
+
+  let name = req.body.name;
+
+  try {
+    const project = await projectService.createProject(name);
+    console.log(project);
+  } catch (error) {
+    res.status(422).json({
+      error: true,
+      message: "Could not create project",
+    });
+    console.log(error);
+    return;
+  }
+
+  res.status(200).json({
+    error: false,
+    name: name,
+  });
 });
 
 app.listen(port, () => {

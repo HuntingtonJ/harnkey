@@ -1,4 +1,17 @@
+---
+layout: doc
+---
+
 # Projects
+
+<div style="display:inline">Project: </div>
+<div style="display:inline">
+  <select v-model="data.name">
+    <option v-for="project in data.projects">{{project.name}}</option>
+  </select>
+</div>
+
+<Sankey :harness-data="data.harnessData" :name="data.name"/>
 
 <script setup>
 import {reactive, onMounted} from "vue";
@@ -37,7 +50,7 @@ const getProjects = async function () {
 
 const getHarness = async function (name) {
   const res = await axios.get(`http://localhost:3000/harness?name=${name}`);
-  
+
   return res.data;
 }
 
@@ -58,7 +71,6 @@ const createData = function (resData) {
       label: [],
       color: [],
     },
-
     link: {
       source: [],
       target: [],
@@ -72,12 +84,14 @@ const createData = function (resData) {
     throw new Error("Links or Nodes is not an object");
   }
 
+  // Build nodes
   Object.entries(nodes).map((entry) => {
     let node = entry[1];
     data.node.label.push(node.label);
     data.node.color.push(node.color);
   });
 
+  // Build links
   Object.entries(links).map((entry) => {
     let link = entry[1];
     data.link.source.push(link.sourceIndex);
@@ -85,14 +99,7 @@ const createData = function (resData) {
     data.link.value.push(link.count);
   });
 
-  console.log(data);
+  // console.log(data);
   return data;
 };
 </script>
-
-<div>Project: {{data.name}}</div>
-<select v-model="data.name">
-  <option v-for="project in data.projects">{{project.name}}</option>
-</select>
-
-<Sankey :harness-data="data.harnessData" :name="data.name"/>

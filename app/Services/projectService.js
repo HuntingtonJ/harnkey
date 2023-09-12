@@ -15,4 +15,29 @@ module.exports = class ProjectService {
 
     return projects;
   }
+
+  async createProject(name) {
+    if (!this.validateName(name)) {
+      throw new Error("Invalid project name");
+    }
+
+    let exists = await this.projects.getProjectByName(name);
+    if (exists) {
+      throw new Error("Project name already exists");
+    }
+
+    let project;
+
+    try {
+      project = await this.projects.createProject(name);
+    } catch (error) {
+      console.error(error);
+    }
+
+    return project;
+  }
+
+  validateName() {
+    return true;
+  }
 };

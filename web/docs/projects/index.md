@@ -1,6 +1,3 @@
----
----
-
 # Projects
 
 <script setup>

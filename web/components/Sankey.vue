@@ -29,7 +29,10 @@ export default {
           // height: 772,
           font: {
             size: 10,
+            color: "white",
           },
+          plot_bgcolor: "black",
+          paper_bgcolor: "black",
         }
       }
     }

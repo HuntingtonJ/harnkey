@@ -12,10 +12,10 @@ class Projects {
     return results;
   }
 
-  async getProjectsById(id) {
+  async getProjectById(id) {
     const [results, metadata] = await this.db.query(
       `
-        SELECT * FROM Projects WHERE id = "${id}" AND deletedAt IS NULL;
+        SELECT * FROM Projects WHERE id = ${id} AND deletedAt IS NULL;
       `
     );
     return results;

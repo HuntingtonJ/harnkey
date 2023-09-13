@@ -17,12 +17,13 @@ module.exports = class ProjectService {
   }
 
   async createProject(name) {
-    if (!this.validateName(name)) {
-      throw new Error("Invalid project name");
+    let valid = this.validateName(name);
+    console.log(valid);
+    if (valid.error) {
+      throw new Error(`Invalid project name: ${valid.message}`);
     }
 
     let exists = await this.projects.getProjectByName(name);
-    console.log(exists);
     if (exists.length) {
       throw new Error("Project name already exists");
     }
@@ -32,13 +33,34 @@ module.exports = class ProjectService {
     try {
       project = await this.projects.createProject(name);
     } catch (error) {
-      console.error(error);
+      throw new Error("Could not create project");
     }
 
     return project;
   }
 
-  validateName() {
+  validateName(name) {
+    let error = false;
+    let message = "";
+    if (!(name.length > 0)) {
+      error = true;
+      message = "Name must be atleast 1 character";
+      return { error, message };
+    }
+
+    if (!(name.length < 33)) {
+      error = true;
+      message = "Name must be less than 33 characters";
+      return { error, message };
+    }
+
+    const re = new RegExp("^[a-zA-Z0-9_]*$");
+    if (!name.match(re)) {
+      error = true;
+      message = "Name can only contain letters, numbers and underscores";
+      return { error, message };
+    }
+
     return true;
   }
 };

@@ -21,7 +21,7 @@ const port = 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get("/ping", (res) => {
+app.get("/ping", (req, res) => {
   res.send("pong");
 });
 

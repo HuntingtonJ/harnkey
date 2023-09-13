@@ -22,7 +22,8 @@ module.exports = class ProjectService {
     }
 
     let exists = await this.projects.getProjectByName(name);
-    if (exists) {
+    console.log(exists);
+    if (exists.length) {
       throw new Error("Project name already exists");
     }
 

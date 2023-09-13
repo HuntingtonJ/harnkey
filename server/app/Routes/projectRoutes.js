@@ -17,7 +17,6 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  console.log(req.body);
   if (!req.body.name) {
     res.status(422).json({
       error: true,
@@ -38,7 +37,7 @@ router.post("/", async (req, res) => {
       error: true,
       message: error.message,
     });
-    console.error(error);
+
     return;
   }
 

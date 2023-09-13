@@ -66,9 +66,10 @@ app.post("/projects", async (req, res, next) => {
     const project = await projectService.createProject(name);
     console.log(project);
   } catch (error) {
+    console.log(error);
     res.status(422).json({
       error: true,
-      message: "Could not create project",
+      message: error.message,
     });
     console.error(error);
     return;

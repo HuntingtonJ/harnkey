@@ -110,13 +110,11 @@ module.exports = class ProjectService {
     let newNodes = [];
 
     try {
-      let lastProject = await this.nodes.getLastNode(projectId);
-
-      console.log(lastProject);
+      let lastNode = await this.nodes.getLastNode(projectId);
 
       projectIndex = 0;
-      if (lastProject) {
-        projectIndex = lastProject.projectIndex + 1;
+      if (lastNode) {
+        projectIndex = lastNode.projectIndex + 1;
       }
     } catch (error) {
       throw error;

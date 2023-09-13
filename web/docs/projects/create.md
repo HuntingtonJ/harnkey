@@ -5,7 +5,8 @@
   <input v-model="data.name" placeholder="enter name"/>
   <button @click="createProject">Create</button>
 </div>
-<div class="error" id="errorDiv" :v-if="error">{{data.error_message}}</div>
+<div :class="$style.error" id="errorDiv" v-if="data.error">{{data.error_message}}</div>
+<div :class="$style.success" id="successDiv" v-if="data.success">{{data.success_message}}</div>
 
 <script setup>
 import {reactive, onMounted} from "vue";
@@ -16,22 +17,19 @@ const data = reactive({
   name: "",
   error_message: "",
   success_message: "",
+  success: false,
 })
 
 async function createProject(event) {
   if (!data.name) {
-    data.error = true;
-    data.error_message = "Please enter a name";
-    data.name = "";
+    setError("Please enter a name");
     console.error(data.error_message);
     return;
   }
 
   let validate = validateName(data.name);
   if (validate.error) {
-    data.error = true;
-    data.error_message = validate.message;
-    data.name = "";
+    setError(validate.message);
     console.error(data.error_message);
     return;
   }
@@ -39,30 +37,34 @@ async function createProject(event) {
   let projectRes;
   try {
     projectRes = await postProject(data.name);
-    if (projectRes.error) {
-      throw new Error(projectRes.message);
+    if (!projectRes.err) {
+      setSuccess();
     }
   } catch(error) {
-    data.error = true;
-    data.error_message = error.data;
-    data.name = "";
+    if (error.response) {
+      setError(error.response.data.message);
+    }
+    
     console.error(error);
   }
-
+  
   return;
 }
 
 async function postProject(name) {
-  let error = false;
-  const res = await axios.post(`http://localhost:3000/projects`, {
-    name,
-  })
+  let err = false;
+  let message = "";
 
-  if (!res.status === 200) {
-    error = true;
-    res.data.message;
-    return {error, message};
+  try {
+    const res = await axios.post(`http://localhost:3000/projects`, {
+      name,
+    })
+  } catch(error) {
+    throw error
   }
+  
+
+  return {err, message};
 }
 
 // Should validate that a nmae has only alphanumeric charaters upto 32 characters
@@ -76,6 +78,31 @@ function validateName(name) {
     return {error, message}
   }
 
-  return {error};
+  return {error, message};
+}
+
+function setError(message) {
+  data.success = false;
+  data.success_message = "";
+  data.error = true;
+  data.error_message = message;
+  data.name = "";
+}
+
+function setSuccess() {
+  data.success = true;
+  data.success_message = `Created project ${data.name}`;
+  data.error = false;
+  data.error_message = "";
+  data.name = "";
 }
 </script>
+
+<style module>
+  .error {
+    color: red;
+  }
+  .success {
+    color: green;
+  }
+</style>

@@ -6,6 +6,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start:server": "cd server && npm run start",
+    "start:web": "cd web && npm run docs:dev",
     "db:up": "docker-compose up -d db",
     "db:down": "docker-compose rm -s -v db",
     "migrate": "npx sequelize-cli db:migrate",

@@ -24,7 +24,7 @@ const port = 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static("dist"));
+// app.use(express.static("dist"));
 
 app.get("/harness", async (req, res) => {
   let name = "";
@@ -44,12 +44,12 @@ app.get("/harness", async (req, res) => {
   }
 });
 
-app.get("/projects", async (req, res) => {
+app.get("/projects", async (req, res, next) => {
   const projects = await projectService.getProjects();
   res.json(projects);
 });
 
-app.post("/projects", async (req, res) => {
+app.post("/projects", async (req, res, next) => {
   console.log(req.body);
   if (!req.body.name) {
     res.status(422).json({
@@ -70,9 +70,36 @@ app.post("/projects", async (req, res) => {
       error: true,
       message: "Could not create project",
     });
-    console.log(error);
+    console.error(error);
     return;
   }
+
+  app.post("/projects/:projectId", async (req, res, next) => {
+    const data = req.body;
+    console.log(req.params);
+
+    if (!data.nodes[0]) {
+      res.status(422).json({
+        error: true,
+        message: "Missing nodes",
+      });
+
+      return;
+    }
+
+    let nodes = data.nodes;
+
+    nodes.foreach((node) => {
+      try {
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    res.status(200).json({
+      message: `Created nodes for projectId: ${req.params.projectId}`,
+    });
+  });
 
   res.status(200).json({
     error: false,

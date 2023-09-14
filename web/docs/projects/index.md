@@ -13,15 +13,27 @@ layout: doc
 
 <Sankey :harness-data="data.harnessData" :name="data.name"/>
 
+# Nodes
+
+<NodeTable :nodes="data.nodes" />
+
+# Links
+
+<LinkTable :nodes="data.nodes" :links="data.links" />
+
 <script setup>
 import {reactive, onMounted, onUpdated} from "vue";
 import Sankey from "../../components/Sankey.vue";
+import NodeTable from "../../components/NodeTable.vue";
+import LinkTable from "../../components/LinkTable.vue";
 import axios from "axios";
 
 const data = reactive({
   name: 'DEMO',
   harnessData: [],
   projects: [],
+  links: [],
+  nodes: [],
 })
 
 onMounted(async () => {
@@ -59,10 +71,10 @@ async function getHarness(name) {
 }
 
 function createData(resData) {
-  const links = resData.links;
-  const nodes = resData.nodes;
+  data.links = resData.links;
+  data.nodes = resData.nodes;
 
-  var data = {
+  var boilerplate = {
     type: "sankey",
     orientation: "h",
     node: {
@@ -82,29 +94,29 @@ function createData(resData) {
     },
   };
 
-  if (typeof links !== "object" || typeof nodes !== "object") {
-    console.error(`typeof links: ${typeof links}`);
-    console.error(`typeof nodes: ${typeof nodes}`);
+  if (typeof data.links !== "object" || typeof data.nodes !== "object") {
+    console.error(`typeof links: ${typeof data.links}`);
+    console.error(`typeof nodes: ${typeof data.nodes}`);
     throw new Error("Links or Nodes is not an object");
   }
 
   // Build nodes
-  Object.entries(nodes).map((entry) => {
+  Object.entries(data.nodes).map((entry) => {
     let node = entry[1];
-    data.node.label.push(node.label);
-    data.node.color.push(node.color);
+    boilerplate.node.label.push(node.label);
+    boilerplate.node.color.push(node.color);
   });
 
   // Build links
-  Object.entries(links).map((entry) => {
+  Object.entries(data.links).map((entry) => {
     let link = entry[1];
-    data.link.source.push(link.sourceIndex);
-    data.link.target.push(link.targetIndex);
-    data.link.value.push(link.count);
+    boilerplate.link.source.push(link.sourceIndex);
+    boilerplate.link.target.push(link.targetIndex);
+    boilerplate.link.value.push(link.count);
   });
 
   // console.log(data);
-  return data;
+  return boilerplate;
 };
 </script>
 

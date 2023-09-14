@@ -1,8 +1,4 @@
 <template>
-  <div id="plotTitle" style="text-align:center">
-    <span>{{ name }}</span>
-  </div>
-  
   <div id="harnessDiv"></div>
 </template>
 
@@ -30,21 +26,18 @@ export default {
             size: 10,
             color: "white",
           },
-          plot_bgcolor: "black",
-          paper_bgcolor: "black",
+          plot_bgcolor: "#272626",
+          paper_bgcolor: "#272626",
         }
       }
     }
   },
   setup(props) {
     onMounted(() => {
-      console.log(props.harnessData);
       Plotly.newPlot("harnessDiv", props.harnessData, props.layout);
     })
 
     onUpdated(() => {
-      console.log(props.layout);
-      console.log(props.harnessData[0]);
       props.layout.title = `${props.name} Sankey`;
       Plotly.react("harnessDiv", props.harnessData, props.layout);
     })

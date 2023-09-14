@@ -1,12 +1,14 @@
 const Projects = require("../Repositories/projects");
 const Nodes = require("../Repositories/nodes");
 const { isNull } = require("lodash");
+const Links = require("../Repositories/links");
 
 module.exports = class ProjectService {
   constructor(db) {
     this.db = db;
     this.projects = new Projects(db);
     this.nodes = new Nodes(db);
+    this.links = new Links(db);
   }
 
   async getProjects() {
@@ -112,9 +114,11 @@ module.exports = class ProjectService {
     try {
       let lastNode = await this.nodes.getLastNode(projectId);
 
+      console.log(lastNode);
+
       projectIndex = 0;
-      if (lastNode) {
-        projectIndex = lastNode.projectIndex + 1;
+      if (lastNode && lastNode.length > 0) {
+        projectIndex = lastNode[0].projectIndex + 1;
       }
     } catch (error) {
       throw error;
@@ -167,7 +171,113 @@ module.exports = class ProjectService {
   }
 
   async createLinks(projectId, links) {
-    let projectIndex = null;
     let newLinks = [];
+
+    if (!(links.length > 0)) {
+      throw new Error("Links is an empty array");
+    }
+
+    let valid;
+    try {
+      valid = await this.validateLinks(projectId, links);
+    } catch (error) {
+      throw error;
+    }
+    if (valid.error) {
+      throw new Error(valid.message);
+    }
+
+    for (const link of links) {
+      let sourceId = link.sourceId;
+      let targetId = link.targetId;
+      let count = link.count;
+      let label = link.label;
+
+      if (!targetId) {
+        throw new Error("Missing targetId");
+      }
+
+      if (!sourceId) {
+        throw new Error("Missing sourceId");
+      }
+
+      if (!count) {
+        throw new Error("Missing count");
+      }
+
+      if (!label) {
+        throw new Error("Missing label");
+      }
+
+      let newLink;
+
+      try {
+        newLink = await this.links.createLink(
+          projectId,
+          sourceId,
+          targetId,
+          count,
+          label
+        );
+      } catch (error) {
+        throw error;
+      }
+
+      newLinks = [...newLinks, newLink];
+    }
+
+    return newLinks;
+  }
+
+  async validateLinks(projectId, links) {
+    let error = false;
+    let message = "";
+
+    let ids = [];
+    // create an array of all unique source and target ids
+    for (const link of links) {
+      ids = [...ids, link.sourceId, link.targetId];
+    }
+
+    let uniqueIds = [...new Set(ids)];
+
+    // check that unique ids belong to the project
+    let nodes;
+    try {
+      nodes = await this.nodes.getNodes(projectId);
+    } catch (error) {
+      throw error;
+    }
+
+    if (!(nodes.length > 0)) {
+      error = true;
+      message = "This project does not have any nodes";
+
+      return { error, message };
+    }
+
+    let nodeIds = [];
+    for (const node of nodes) {
+      nodeIds = [...nodeIds, node.id];
+    }
+
+    // uniqueIds must be a subset of nodeIds
+    if (!this.isSubset(nodeIds, uniqueIds)) {
+      error = true;
+      message =
+        "Links have source or target ids that do not belong to the project";
+
+      return { error, message };
+    }
+
+    return true;
+  }
+
+  isSubset(superset, subset) {
+    const supersetSet = new Set(superset);
+
+    const isSubset = subset.every((id) => supersetSet.has(id));
+
+    return isSubset;
   }
 };

@@ -115,4 +115,72 @@ router.post("/:projectId/nodes", async (req, res) => {
   });
 });
 
+router.post("/:projectId/links", async (req, res) => {
+  const params = req.params;
+  const data = req.body;
+
+  const projectId = Number(params.projectId);
+
+  let project;
+  try {
+    project = await projectService.getProjectById(projectId);
+  } catch (error) {
+    console.error(error);
+    res.status(422).json({
+      error: true,
+      message: error.message,
+    });
+
+    return;
+  }
+
+  if (!(project.length > 0)) {
+    res.status(404).json({
+      error: true,
+      message: "Project does not exist",
+    });
+
+    return;
+  }
+
+  if (!data.links) {
+    res.status(422).json({
+      error: true,
+      message: "Missing links",
+    });
+
+    return;
+  }
+
+  const links = data.links;
+  console.log(links);
+
+  if (!(links.length > 0)) {
+    res.status(422).json({
+      error: true,
+      message: "Links is an empty array",
+    });
+
+    return;
+  }
+
+  let newLinks;
+  try {
+    newLinks = await projectService.createLinks(projectId, links);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({
+      error: true,
+      message: "Failed to add links",
+    });
+
+    return;
+  }
+
+  res.status(200).json({
+    newLinks,
+    message: `Created links for projectId: ${req.params.projectId}`,
+  });
+});
+
 module.exports = router;

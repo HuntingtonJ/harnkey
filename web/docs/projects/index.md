@@ -5,8 +5,8 @@ layout: doc
 # Projects
 
 <div style="display:inline">Project: </div>
-<div style="display:inline">
-  <select v-model="data.name">
+<div style="display:inline" class="projectSelect">
+  <select v-model="data.name" @change="updateHarness()">
     <option v-for="project in data.projects">{{project.name}}</option>
   </select>
 </div>
@@ -34,37 +34,31 @@ onMounted(async () => {
   }
 
   // Get harness data
+  await updateHarness();
+})
+
+async function updateHarness() {
   try {
     let harness = await getHarness(data.name);
     data.harnessData = [createData(harness)];
   } catch (error) {
     console.error(`Could not retrieve harness data: `, error);
   }
-})
+}
 
-onUpdated(async () => {
-  // Get harness data
-  try {
-    let harness = await getHarness(data.name);
-    data.harnessData = [createData(harness)];
-  } catch (error) {
-    console.error(`Could not retrieve harness data: `, error);
-  }
-})
-
-const getProjects = async function () {
+async function getProjects() {
   const res = await axios.get(`http://localhost:3000/projects`);
 
   return res.data;
 }
 
-const getHarness = async function (name) {
+async function getHarness(name) {
   const res = await axios.get(`http://localhost:3000/harness?name=${name}`);
 
   return res.data;
 }
 
-const createData = function (resData) {
+function createData(resData) {
   const links = resData.links;
   const nodes = resData.nodes;
 
@@ -113,3 +107,7 @@ const createData = function (resData) {
   return data;
 };
 </script>
+
+<style module>
+
+</style>

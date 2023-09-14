@@ -18,6 +18,8 @@ class Nodes {
         SELECT * FROM Nodes WHERE projectId = ${projectId} ORDER BY projectIndex DESC LIMIT 1;
       `
     );
+
+    return results;
   }
 
   async createNode(projectId, projectIndex, label, color, type = "default") {

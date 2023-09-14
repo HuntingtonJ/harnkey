@@ -4,11 +4,13 @@ layout: doc
 
 # Projects
 
-<div style="display:inline">Project: </div>
-<div style="display:inline" class="projectSelect">
-  <select v-model="data.name" @change="updateHarness()">
-    <option v-for="project in data.projects">{{project.name}}</option>
-  </select>
+<div id="projectSelectDiv">
+  <div style="display:inline">Project: </div>
+  <div style="display:inline" class="projectSelect">
+    <select v-model="data.name" @change="updateHarness()">
+      <option v-for="project in data.projects">{{project.name}}</option>
+    </select>
+  </div>
 </div>
 
 <Sankey :harness-data="data.harnessData" :name="data.name"/>
@@ -121,5 +123,4 @@ function createData(resData) {
 </script>
 
 <style module>
-
 </style>

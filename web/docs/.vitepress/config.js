@@ -9,7 +9,6 @@ export default defineConfig({
     nav: [
       { text: "Home", link: "/" },
       { text: "Projects", link: "/projects/index" },
-      // { text: "Examples", link: "/markdown-examples" },
     ],
 
     sidebar: [
@@ -20,13 +19,6 @@ export default defineConfig({
           { text: "Create", link: "/projects/create" },
         ],
       },
-      // {
-      //   text: "Examples",
-      //   items: [
-      //     { text: "Markdown Examples", link: "/markdown-examples" },
-      //     { text: "Runtime API Examples", link: "/api-examples" },
-      //   ],
-      // },
     ],
 
     socialLinks: [

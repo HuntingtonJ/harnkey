@@ -61,7 +61,7 @@ export default {
     align-self: center;
   }
   .vp-doc td {
-    padding: 2px 16px;
+    padding: 1px 16px;
     text-align: center;
   }
 </style>
